@@ -1,1 +1,93 @@
-Hello!
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wobble</title>
+	<script type="text/javascript">
+
+		var D2R = (Math.PI/180); // Degree to Rad okians
+		var P2 = Math.PI * 2;
+
+
+  		document.addEventListener("DOMContentLoaded", function(event) {
+     		
+    		var canvas = document.getElementById("backgroundCanvas");
+
+    		function resize(event){
+				// Switch resolution
+				if(window.innerWidth < 256 && window.innerHeight < 256){
+	    			canvas.width = window.innerWidth;
+   	 			canvas.height = window.innerHeight;						
+				}else if(window.innerWidth < 512 && window.innerHeight < 512){
+	    			canvas.width = window.innerWidth/2;
+   	 			canvas.height = window.innerHeight/2;						
+   	 		}else{
+	    			canvas.width = window.innerWidth/4;
+   	 			canvas.height = window.innerHeight/4;						
+   	 		}
+    		}
+
+			window.addEventListener("resize", resize);
+			resize();
+			
+			var ctx = canvas.getContext("2d");
+	
+			
+			function draw(frame){
+	   		requestAnimationFrame(draw);
+
+				
+				var phase = ((2*Math.PI)/canvas.width); // Increment for a full phase per width
+
+	   		
+	   		var a = (frame/1000*P2); // New every second
+	   		var b = (frame/1000*P2)*0.23; 
+	   		var c = (frame/1000*P2)*0.76; 
+	   		var d = (frame/1000*P2)*1.27; 
+				
+
+				ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
+	   		ctx.fillStyle = "rgb(0,60,90)";
+	   		ctx.fillRect(0,0,canvas.width,canvas.height);
+				
+				var h = canvas.height*0.5;
+				ctx.translate(0,h);
+
+	   		
+				ctx.strokeStyle = "rgb(0,0,10)";
+				
+				var l = canvas.height*0.2;
+				
+				var t = canvas.height*0.2;
+
+				for(var x=0;x<canvas.width;x+=1){
+
+					ctx.beginPath();
+					ctx.moveTo(x,h);
+					ctx.lineTo(x,(Math.cos(a/1.14)*Math.sin(b*2.63)*l)+(Math.sin(-c*1.23)*Math.cos(d*1.43)*t));
+					ctx.stroke();
+
+					a+=phase;
+					b+=phase;
+					c+=phase;
+					d+=phase;
+
+				}
+			}
+
+			draw(Date.now());
+			
+  		});
+	</script>
+	<style type="text/css">	
+		html,body{
+			margin:0;padding:0;background-color: #000;overflow:hidden;			
+		}
+		canvas{
+			width:100%;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="backgroundCanvas" width="250" height="250"></canvas>
+</body>
+</html>

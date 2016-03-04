@@ -1,4 +1,4 @@
 Wobble
 ======
 
-A simple canvas experiment.
+A simple canvas experiment, scaling canvas resolution and wobble.
